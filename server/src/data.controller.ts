@@ -27,7 +27,12 @@ class UserController {
     for (const item of DATA) {
       await db.query(`INSERT INTO stations (date,name,quantity, distance) values (${item.date},${item.name},${item.quantity},${item.distance})`)
     }
-    res.end("all good!)");
+    console.log("all good!)");
+  }
+  async getData(req: IncomingMessage, res: ServerResponse) {
+    const data = await db.query('SELECT * FROM stations');
+    console.log(data.rows);
+    return data.rows;
   }
 }
 

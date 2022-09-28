@@ -1,5 +1,5 @@
 create TABLE stations(
-  date date,
+  date VARCHAR(255),
   name VARCHAR(255),
   quantity INTEGER,
   distance INTEGER
