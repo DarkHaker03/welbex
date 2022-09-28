@@ -28,7 +28,10 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
     else if (req.url === "/createData") {
       console.log("createData");
       controller.createData();
-      // console.log(responce);
+    }
+    else if (req.url === "/deleteData") {
+      console.log("createData");
+      controller.deleteData();
     }
   }
 });
