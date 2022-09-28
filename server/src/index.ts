@@ -1,36 +1,32 @@
 import { IncomingMessage, ServerResponse } from "http";
+import { DataArguments } from './data.controller';
 const controller = require('./data.controller');
-
 const http = require('http');
 
-const hostname = '127.0.0.1';
-const port = 8080;
+const HOSTNAME = '127.0.0.1';
+const PORT = 8080;
 
-const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
+const server = http.createServer(({ method, url }: IncomingMessage, res: ServerResponse) => {
   setHeaders(res)
-  if (req.method === "GET") {
-    console.log("GET");
-    if (req.url === "/getData") {
-      controller.getData().then((res2: any) => {
-        console.log(res2);
-        res.end(JSON.stringify(res2));
+  if (method === "GET") {
+    if (url === "/getData") {
+      controller.getData().then((response: DataArguments) => {
+        res.end(JSON.stringify(response));
       });
     }
-    else if (req.url === "/createData") {
-      console.log("createData");
+    else if (url === "/addData") {
       controller.addData();
     }
-    else if (req.url === "/deleteData") {
-      console.log("createData");
+    else if (url === "/deleteData") {
       controller.deleteData();
     }
   }
+  res.end();
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+server.listen(PORT, HOSTNAME, () => {
+  console.log(`Server running at http://${HOSTNAME}:${PORT}/`);
 });
-
 
 function setHeaders(res: ServerResponse) {
   res.setHeader("Access-Control-Allow-Origin", "*")

@@ -1,6 +1,6 @@
 const db = require('./db');
 
-type DataArguments = {
+export type DataArguments = {
   date: string,
   name: string,
   quantity: number,

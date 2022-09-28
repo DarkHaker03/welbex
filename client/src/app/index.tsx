@@ -24,7 +24,7 @@ function App() {
     })
   }, [])
   const createData = () => {
-    axios.get('http://localhost:8080/createData');
+    axios.get('http://localhost:8080/addData');
   }
   const deleteData = () => {
     axios.get('http://localhost:8080/deleteData');
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div className="App">
-      <button onClick={createData}>createData</button>
+      <button onClick={createData}>addData</button>
       <button onClick={deleteData}>deleteData</button>
       <div>
         Сортировка
