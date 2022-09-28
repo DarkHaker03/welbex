@@ -3,13 +3,11 @@ import { useEffect, useState } from 'react';
 import './index.css';
 
 type DataArguments = {
-  date: string,
+  date: Date,
   name: string,
   quantity: number,
   distance: number
 }
-
-type HeadFieldsArguments = 'name' | 'quantity' | 'distance';
 
 const HEAD_FIELDS: string[] = ['name', 'quantity', 'distance'];
 const CONDITIONS: string[] = ['=', 'include', '>', '<'];
@@ -96,14 +94,17 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.name}</td>
-              <td>{item.date}</td>
-              <td>{item.quantity}</td>
-              <td>{item.distance}</td>
-            </tr>
-          ))}
+          {filteredData.map(({ name, quantity, distance, date }, idx) => {
+            const formatedDate: string = new Date(date).toISOString().substr(0, 10);
+            return (
+              <tr key={idx}>
+                <td>{name}</td>
+                <td>{formatedDate}</td>
+                <td>{quantity}</td>
+                <td>{distance}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
