@@ -28,6 +28,9 @@ function App() {
   const createData = () => {
     axios.get('http://localhost:8080/createData');
   }
+  const deleteData = () => {
+    axios.get('http://localhost:8080/deleteData');
+  }
   const filteredData = data.filter((item) => {
     if (selectedHeaderField === 'quantity' || selectedHeaderField === 'distance') {
       if (selectedCondition === '=') {
@@ -55,6 +58,7 @@ function App() {
   return (
     <div className="App">
       <button onClick={createData}>createData</button>
+      <button onClick={deleteData}>deleteData</button>
       <div>
         Сортировка
         <div>

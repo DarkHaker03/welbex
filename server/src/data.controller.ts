@@ -23,16 +23,19 @@ const DATA: DataArguments[] = [
 ]
 
 class UserController {
-  async createData(req: IncomingMessage, res: ServerResponse) {
+  async createData() {
     for (const item of DATA) {
       await db.query(`INSERT INTO stations (date,name,quantity, distance) values (${item.date},${item.name},${item.quantity},${item.distance})`)
     }
     console.log("all good!)");
   }
-  async getData(req: IncomingMessage, res: ServerResponse) {
+  async getData() {
     const data = await db.query('SELECT * FROM stations');
     console.log(data.rows);
     return data.rows;
+  }
+  async deleteData() {
+    await db.query('DELETE FROM stations')
   }
 }
 
