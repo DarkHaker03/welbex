@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 import { DataArguments } from './index';
 
 type Props = {
@@ -7,29 +7,20 @@ type Props = {
 
 const Tbody: FC<Props> = ({ filteredData }) => (
   <tbody>
-    {filteredData.map(({ name, quantity, distance, date }, idx) => {
+    {filteredData.map(({
+      name, quantity, distance, date,
+    }) => {
       const formatedDate: string = new Date(date).toISOString().substr(0, 10);
       return (
-        <tr key={idx}>
+        <tr>
           <td>{name}</td>
           <td>{formatedDate}</td>
           <td>{quantity}</td>
           <td>{distance}</td>
         </tr>
-      )
+      );
     })}
   </tbody>
 );
 
 export default Tbody;
-
-function evaluate(a: number, b: number, operation: string) {
-  switch (operation) {
-    case "=":
-      return a === b;
-    case "<":
-      return a < b;
-    case ">":
-      return a > b;
-  }
-}
