@@ -21,7 +21,6 @@ const server = http.createServer(({ method, url }: IncomingMessage, res: ServerR
       controller.deleteData();
     }
   }
-  res.end();
 });
 
 server.listen(PORT, HOSTNAME, () => {

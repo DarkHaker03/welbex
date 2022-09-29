@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './index.css';
+import Tbody from './tbody';
 
-type DataArguments = {
+export type DataArguments = {
   date: Date,
   name: string,
   quantity: number,
@@ -17,18 +18,20 @@ function App() {
   const [value, setValue] = useState<number | string>('');
   const [selectedHeaderField, setSelectedHeaderField] = useState<string>('name');
   const [selectedCondition, setSelectedCondition] = useState<string>('=');
+
   useEffect(() => {
     axios.get('http://localhost:8080/getData').then((res) => {
-      console.log(res.data);
       setData(res.data);
     })
   }, [])
+
   const createData = () => {
     axios.get('http://localhost:8080/addData');
   }
   const deleteData = () => {
     axios.get('http://localhost:8080/deleteData');
   }
+
   const filteredData = data.filter((item) => {
     if (selectedHeaderField === 'quantity' || selectedHeaderField === 'distance') {
       if (selectedCondition === '=') {
@@ -48,10 +51,6 @@ function App() {
     }
     return false;
   })
-  console.log(filteredData);
-  console.log(selectedHeaderField);
-  console.log(selectedCondition);
-  console.log(value);
 
   return (
     <div className="App">
@@ -93,19 +92,7 @@ function App() {
             <th>distance</th>
           </tr>
         </thead>
-        <tbody>
-          {filteredData.map(({ name, quantity, distance, date }, idx) => {
-            const formatedDate: string = new Date(date).toISOString().substr(0, 10);
-            return (
-              <tr key={idx}>
-                <td>{name}</td>
-                <td>{formatedDate}</td>
-                <td>{quantity}</td>
-                <td>{distance}</td>
-              </tr>
-            )
-          })}
-        </tbody>
+        <Tbody filteredData={filteredData} />
       </table>
     </div>
   );
