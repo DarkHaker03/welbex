@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { evaluate } from '../shared/help-functions';
 import './index.css';
+import { SelectOfHeadTable, SelectOfCondition } from './selects';
 import Tbody from './tbody';
 
 export type DataArguments = {
@@ -11,13 +12,13 @@ export type DataArguments = {
   distance: number
 }
 
-type ai = {
+export type HeadFieldsArguments = {
   name: 'name' | 'quantity' | 'distance',
   type: 'string' | 'number',
   conditions: string[]
 }
 
-const HEAD_FIELDS: ai[] = [
+const HEAD_FIELDS: HeadFieldsArguments[] = [
   {
     name: 'name',
     type: 'string',
@@ -37,7 +38,9 @@ const HEAD_FIELDS: ai[] = [
 const App = () => {
   const [data, setData] = useState<DataArguments[]>([]);
   const [value, setValue] = useState<string>('');
-  const [selectedHeaderField, setSelectedHeaderField] = useState<ai>(HEAD_FIELDS[0]);
+  const [
+    selectedHeaderField, setSelectedHeaderField,
+  ] = useState<HeadFieldsArguments>(HEAD_FIELDS[0]);
   const [
     selectedCondition, setSelectedCondition,
   ] = useState<string>(selectedHeaderField.conditions[0]);
@@ -72,22 +75,11 @@ const App = () => {
       <div>
         Сортировка
         <div>
-          <select
-            onChange={(e) => {
-              setSelectedHeaderField(HEAD_FIELDS.filter((item) => item.name === e.target.value)[0]);
-            }}
-          >
-            {HEAD_FIELDS.map(({ name }) => (
-              <option value={name}>{name}</option>
-            ))}
-          </select>
-          <select
-            onChange={(e) => setSelectedCondition(e.target.value)}
-          >
-            {selectedHeaderField.conditions.map((condition) => (
-              <option value={condition}>{condition}</option>
-            ))}
-          </select>
+          <SelectOfHeadTable HEAD_FIELDS={HEAD_FIELDS} set={setSelectedHeaderField} />
+          <SelectOfCondition
+            set={setSelectedCondition}
+            selectedHeaderField={selectedHeaderField}
+          />
           <input
             type={selectedHeaderField.type === 'string' ? 'text' : 'number'}
             value={value}
