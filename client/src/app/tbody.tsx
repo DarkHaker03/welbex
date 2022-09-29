@@ -22,3 +22,14 @@ const Tbody: FC<Props> = ({ filteredData }) => (
 );
 
 export default Tbody;
+
+function evaluate(a: number, b: number, operation: string) {
+  switch (operation) {
+    case "=":
+      return a === b;
+    case "<":
+      return a < b;
+    case ">":
+      return a > b;
+  }
+}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { evaluate } from '../shared/help-functions';
 import './index.css';
 import Tbody from './tbody';
 
@@ -10,14 +11,34 @@ export type DataArguments = {
   distance: number
 }
 
-const HEAD_FIELDS: string[] = ['name', 'quantity', 'distance'];
-const CONDITIONS: string[] = ['=', 'include', '>', '<'];
+type ai = {
+  name: 'name' | 'quantity' | 'distance',
+  type: 'string' | 'number',
+  conditions: string[]
+}
+
+const HEAD_FIELDS: ai[] = [
+  {
+    name: 'name',
+    type: 'string',
+    conditions: ['include']
+  },
+  {
+    name: 'quantity',
+    type: 'number',
+    conditions: ['=', '>', '<']
+  }, {
+    name: 'distance',
+    type: 'number',
+    conditions: ['=', '>', '<']
+  },
+];
 
 function App() {
   const [data, setData] = useState<DataArguments[]>([]);
-  const [value, setValue] = useState<number | string>('');
-  const [selectedHeaderField, setSelectedHeaderField] = useState<string>('name');
-  const [selectedCondition, setSelectedCondition] = useState<string>('=');
+  const [value, setValue] = useState<string>('');
+  const [selectedHeaderField, setSelectedHeaderField] = useState<ai>(HEAD_FIELDS[0]);
+  const [selectedCondition, setSelectedCondition] = useState<string>(selectedHeaderField.conditions[0]);
 
   useEffect(() => {
     axios.get('http://localhost:8080/getData').then((res) => {
@@ -33,23 +54,14 @@ function App() {
   }
 
   const filteredData = data.filter((item) => {
-    if (selectedHeaderField === 'quantity' || selectedHeaderField === 'distance') {
-      if (selectedCondition === '=') {
-        return item[selectedHeaderField] == value;
-      } else if (selectedCondition === '>') {
-        return item[selectedHeaderField] > value;
-      } else if (selectedCondition === '<') {
-        return item[selectedHeaderField] < value;
-      }
+    if (selectedHeaderField.type === 'number') {
+      return evaluate(item[selectedHeaderField.name], value, selectedCondition)
     } else {
-      if (typeof value === 'string') {
-        if (value.length === 0) {
-          return true
-        }
-        return !item.name.indexOf(value);
+      if (value.length === 0) {
+        return true
       }
+      return !item.name.indexOf(value);
     }
-    return false;
   })
 
   return (
@@ -60,27 +72,26 @@ function App() {
         Сортировка
         <div>
           <select
-            onChange={(e) => setSelectedHeaderField(e.target.value)}
+            onChange={(e) => {
+              setSelectedHeaderField(HEAD_FIELDS.filter((item) => item.name === e.target.value)[0]);
+            }}
           >
-            {HEAD_FIELDS.map((value) => (
-              <option value={value}>{value}</option>
+            {HEAD_FIELDS.map(({ name }) => (
+              <option value={name}>{name}</option>
             ))}
           </select>
           <select
             onChange={(e) => setSelectedCondition(e.target.value)}
           >
-            {
-              selectedHeaderField !== 'name'
-                ?
-                CONDITIONS.map((value) => (
-                  value !== 'include'
-                    ? <option value={value}>{value}</option>
-                    : null
-                ))
-                : <option>include</option>
-            }
+            {selectedHeaderField.conditions.map((value) => (
+              <option value={value}>{value}</option>
+            ))}
           </select>
-          <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
+          <input
+            type={selectedHeaderField.type === 'string' ? "text" : "number"}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
         </div>
       </div>
       <table>
