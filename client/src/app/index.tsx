@@ -18,6 +18,8 @@ export type HeadFieldsArguments = {
   conditions: string[]
 }
 
+const SERVER = 'http://localhost:8080';
+
 const HEAD_FIELDS: HeadFieldsArguments[] = [
   {
     name: 'name',
@@ -46,16 +48,16 @@ const App = () => {
   ] = useState<string>(selectedHeaderField.conditions[0]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/getData').then((res) => {
+    axios.get(`${SERVER}/getData`).then((res) => {
       setData(res.data);
     });
   }, []);
 
-  const createData = () => {
-    axios.get('http://localhost:8080/addData');
+  const addData = () => {
+    axios.get(`${SERVER}/addData`);
   };
   const deleteData = () => {
-    axios.get('http://localhost:8080/deleteData');
+    axios.get(`${SERVER}/deleteData`);
   };
 
   const filteredData = data.filter((item) => {
@@ -70,7 +72,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <button type="button" onClick={createData}>addData</button>
+      <button type="button" onClick={addData}>addData</button>
       <button type="button" onClick={deleteData}>deleteData</button>
       <div>
         Сортировка
