@@ -41,7 +41,6 @@ const HEAD_FIELDS: HeadFieldsArguments[] = [
 const App = () => {
   const [data, setData] = useState<DataArguments[]>([]);
   const [value, setValue] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [
     selectedHeaderField, setSelectedHeaderField,
   ] = useState<HeadFieldsArguments>(HEAD_FIELDS[0]);
@@ -102,12 +101,10 @@ const App = () => {
               <th>distance</th>
             </tr>
           </thead>
-          <Tbody filteredData={filteredData} currentPage={currentPage} />
+          <Tbody filteredData={filteredData} />
         </table>
         <Pagination
           data={filteredData}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
         />
       </div>
     </div>
