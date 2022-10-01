@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { evaluate } from '../shared/help-functions';
 import './index.css';
+import { Pagination } from '../shared/ui/pagination';
 import { SelectOfHeadTable, SelectOfCondition } from './selects';
 import Tbody from './tbody';
 
@@ -40,6 +41,7 @@ const HEAD_FIELDS: HeadFieldsArguments[] = [
 const App = () => {
   const [data, setData] = useState<DataArguments[]>([]);
   const [value, setValue] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [
     selectedHeaderField, setSelectedHeaderField,
   ] = useState<HeadFieldsArguments>(HEAD_FIELDS[0]);
@@ -69,37 +71,45 @@ const App = () => {
     }
     return !item.name.indexOf(value);
   });
-
   return (
     <div className="App">
-      <button type="button" onClick={addData}>addData</button>
-      <button type="button" onClick={deleteData}>deleteData</button>
       <div>
-        Сортировка
+        <button style={{ margin: '0 10px 10px 0' }} type="button" onClick={addData}>addData</button>
+        <button style={{ margin: '0 0 10px 0' }} type="button" onClick={deleteData}>deleteData</button>
         <div>
-          <SelectOfHeadTable HEAD_FIELDS={HEAD_FIELDS} set={setSelectedHeaderField} />
-          <SelectOfCondition
-            set={setSelectedCondition}
-            selectedHeaderField={selectedHeaderField}
-          />
-          <input
-            type={selectedHeaderField.type === 'string' ? 'text' : 'number'}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
+          <div style={{ marginBottom: '10px' }}>
+            Сортировка
+          </div>
+          <div style={{ display: 'flex' }}>
+            <SelectOfHeadTable HEAD_FIELDS={HEAD_FIELDS} set={setSelectedHeaderField} />
+            <SelectOfCondition
+              set={setSelectedCondition}
+              selectedHeaderField={selectedHeaderField}
+            />
+            <input
+              type={selectedHeaderField.type === 'string' ? 'text' : 'number'}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+          </div>
         </div>
+        <table>
+          <thead>
+            <tr>
+              <th>date</th>
+              <th>name</th>
+              <th>quanity</th>
+              <th>distance</th>
+            </tr>
+          </thead>
+          <Tbody filteredData={filteredData} currentPage={currentPage} />
+        </table>
+        <Pagination
+          data={filteredData}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>name</th>
-            <th>date</th>
-            <th>quanity</th>
-            <th>distance</th>
-          </tr>
-        </thead>
-        <Tbody filteredData={filteredData} />
-      </table>
     </div>
   );
 };
