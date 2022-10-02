@@ -1,13 +1,7 @@
 import { FC } from 'react';
 import { DataArguments } from '../../../../app';
 import { Btn } from '../../btn';
-import {
-  back,
-  next,
-  setCurrentPage,
-  setFromStart,
-  setSelected,
-} from '../model';
+import { paginationModel } from '..';
 import NumberBtns from './numberBtns';
 import styles from './styles.module.scss';
 
@@ -16,6 +10,9 @@ type Props = {
 }
 
 const Pagination: FC<Props> = ({ data }) => {
+  const {
+    next, back, setCurrentPage, setFromStart, setSelected,
+  } = paginationModel;
   let quantityOfBtns: number = 5;
   const counterOfslides = Math.ceil(data.length / 10);
   const isQuiantityMoreThenSlides = quantityOfBtns > counterOfslides;
