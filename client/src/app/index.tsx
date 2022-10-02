@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { evaluate } from '../shared/help-functions';
 import './index.css';
 import { Pagination } from '../shared/ui/pagination';
-import { SelectOfHeadTable, SelectOfCondition } from './selects';
 import Tbody from './tbody';
+import { Select } from '../shared/ui/select';
 
 export type DataArguments = {
   date: Date,
@@ -80,10 +80,19 @@ const App = () => {
             Сортировка
           </div>
           <div style={{ display: 'flex' }}>
-            <SelectOfHeadTable HEAD_FIELDS={HEAD_FIELDS} set={setSelectedHeaderField} />
-            <SelectOfCondition
-              set={setSelectedCondition}
-              selectedHeaderField={selectedHeaderField}
+            <Select
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setSelectedHeaderField(
+                  HEAD_FIELDS.filter((item) => item.name === e.target.value)[0],
+                );
+              }}
+              data={HEAD_FIELDS.map((item) => item.name)}
+            />
+            <Select
+              onChange={
+                (e: React.ChangeEvent<HTMLSelectElement>) => setSelectedCondition(e.target.value)
+              }
+              data={selectedHeaderField.conditions}
             />
             <input
               type={selectedHeaderField.type === 'string' ? 'text' : 'number'}
