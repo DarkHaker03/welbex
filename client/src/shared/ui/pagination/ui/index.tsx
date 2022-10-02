@@ -2,8 +2,8 @@ import { FC } from 'react';
 import { DataArguments } from '../../../../app';
 import { Btn } from '../../btn';
 import {
-  handleClick2,
-  handleClick3,
+  back,
+  next,
   setCurrentPage,
   setFromStart,
   setSelected,
@@ -35,7 +35,7 @@ const Pagination: FC<Props> = ({ data }) => {
         />
         <Btn
           onClick={() => {
-            handleClick2();
+            back();
           }}
           text="<"
         />
@@ -44,7 +44,7 @@ const Pagination: FC<Props> = ({ data }) => {
       <div>
         <Btn
           onClick={() => {
-            handleClick3({ quantityOfBtns, counterOfslides });
+            next({ quantityOfBtns, counterOfslides });
           }}
           text=">"
         />

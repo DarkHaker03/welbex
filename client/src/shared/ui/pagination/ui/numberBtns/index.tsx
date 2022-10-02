@@ -1,6 +1,6 @@
 import { useUnit } from 'effector-react';
 import { FC } from 'react';
-import { $fromStart, $selected, handleClick } from '../../model';
+import { $fromStart, $selected, clickOnNumberBrns } from '../../model';
 import styles from './styles.module.scss';
 
 type Props = {
@@ -19,7 +19,7 @@ const NumberBtns: FC<Props> = ({ quantityOfBtns, counterOfslides }) => {
         const isSelected = selected === (current);
         return (
           <button
-            onClick={() => handleClick({ current, counterOfslides })}
+            onClick={() => clickOnNumberBrns({ current, counterOfslides })}
             className={isSelected ? styles.selected : ''}
             type="button"
           >

@@ -8,7 +8,7 @@ export const $selected = restore<number>(setSelected, 1);
 export const $fromStart = restore<number>(setFromStart, 0);
 export const $currentPage = restore<number>(setCurrentPage, 1);
 
-export const handleClick = createEffect((
+export const clickOnNumberBrns = createEffect((
   { current, counterOfslides }: { current: number, counterOfslides: number },
 ) => {
   const currentPage = $currentPage.getState();
@@ -54,7 +54,7 @@ export const handleClick = createEffect((
   setCurrentPage(current + fromStart);
 });
 
-export const handleClick2 = createEffect(() => {
+export const back = createEffect(() => {
   const selected = $selected.getState();
   const currentPage = $currentPage.getState();
   const fromStart = $fromStart.getState();
@@ -69,7 +69,7 @@ export const handleClick2 = createEffect(() => {
   }
 });
 
-export const handleClick3 = createEffect((
+export const next = createEffect((
   { quantityOfBtns, counterOfslides }: { quantityOfBtns: number, counterOfslides: number },
 ) => {
   const selected = $selected.getState();

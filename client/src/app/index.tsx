@@ -70,6 +70,7 @@ const App = () => {
     }
     return !item.name.indexOf(value);
   });
+
   return (
     <div className="App">
       <div>
